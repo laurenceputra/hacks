@@ -5,13 +5,18 @@
 import urllib
 import lxml.html
 
-url = 'http://google.com'
+url = 'https://google.com'
 connection = urllib.urlopen(url)
 
 dom =  lxml.html.fromstring(connection.read())
 count = 1
-
+failed = []
 for link in dom.xpath('//a/@href'): # select the url in href for all a tags(links)
-    image = urllib.URLopener()
-    image.retrieve(link, str(count) + ".jpg")
-    count += 1
+	try:
+		image = urllib.URLopener()
+		image.retrieve(link, str(count) + ".jpg")
+		count += 1
+	except:
+		failed.append(link)
+
+print failed
